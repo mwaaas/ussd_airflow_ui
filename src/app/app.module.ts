@@ -18,6 +18,8 @@ import { AppRoutingModule } from './app.routing';
 // Layouts
 import { FullLayoutComponent } from './layouts/full-layout.component';
 import { SimpleLayoutComponent } from './layouts/simple-layout.component';
+import { JourneyComponent } from './journey/journey.component';
+import {JourneyModule} from "./journey/journey.module";
 
 @NgModule({
   imports: [
@@ -25,7 +27,8 @@ import { SimpleLayoutComponent } from './layouts/simple-layout.component';
     AppRoutingModule,
     DropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    JourneyModule
   ],
   declarations: [
     AppComponent,
@@ -35,6 +38,7 @@ import { SimpleLayoutComponent } from './layouts/simple-layout.component';
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
     AsideToggleDirective,
+    JourneyComponent,
   ],
   providers: [{
     provide: LocationStrategy,
