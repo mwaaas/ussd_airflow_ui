@@ -33,17 +33,71 @@ export class VisualizerComponent implements AfterViewInit {
             'draggingTool.isGridSnapEnabled': true,
             'undoManager.isEnabled': true
         });
-    // define a simple Node template
+    ussdJourney.layout = $(go.LayeredDigraphLayout, {columnSpacing: 10});
+    ussdJourney.linkTemplate = $(go.Link, {
+        routing: go.Link.Orthogonal, corner: 0,
+        curve: go.Link.JumpOver
+      },
+      $(go.Shape, {strokeWidth: 3, stroke: '#555'}),
+      $(go.Shape, {toArrow: 'Standard', stroke: null}));
     ussdJourney.nodeTemplate =
-      $(go.Node, 'Auto',  // the Shape will go around the TextBlock
-        $(go.Shape, 'RoundedRectangle', { strokeWidth: 0 },
-          // Shape.fill is bound to Node.data.color
-          new go.Binding('fill', 'color')),
-        $(go.TextBlock,
-          { margin: 8 },  // some room around the text
-          // TextBlock.text is bound to Node.data.key
-          new go.Binding('text', 'key'))
-      );
+        $(go.Node, 'Vertical',
+            {
+                background: 'black', toSpot: go.Spot.Left, portId: 'IN',
+                name: 'Screen'
+            },
+            $(go.Panel, 'Auto',
+                {},
+                $(go.Shape, 'RoundedRectangle',
+                    {fill: '#EFEFEF'}),
+                $(go.Panel, 'Vertical',
+                    $(go.TextBlock, 'Screen',
+                        {},
+                        new go.Binding('text', 'key', function (arg) {
+                            return 'Screen ' + arg;
+                        })),
+                    $(go.Panel, 'Auto', {alignment: go.Spot.Center},
+                        $(go.Shape, 'RoundedRectangle',
+                            {fill: 'white', width: 242}),
+                        $(go.TextBlock, '',
+                            {width: 230, font: 'normal 18px san-serif', wrap: go.TextBlock.WrapFit},
+                            new go.Binding('text', 'title')
+                        )
+                    ),
+                    $(go.Panel, 'Vertical',
+                        new go.Binding('itemArray', 'items'),
+                        {
+                            itemTemplate: $(go.Panel, 'Horizontal',
+                                {margin: 1},
+                                $(go.Panel, 'Spot',
+                                    $(go.Shape, 'Rectangle',
+                                        {height: 50, width: 300, fill: '#EFEFEF', stroke: null}),
+                                    $(go.TextBlock,
+                                        {
+                                            margin: 2,
+                                            alignment: new go.Spot(0.04, 0.5),
+                                            alignmentFocus: new go.Spot(0, 0.5),
+                                            width: 10,
+                                            name: 'ObjectIndex'
+                                        },
+                                        new go.Binding('text', 'index')),
+                                    $(go.Panel, 'Auto',
+                                        {alignment: go.Spot.Center},
+                                        $(go.Shape, 'RoundedRectangle',
+                                            {fill: '#FFFFFF', width: 242},
+                                        ),
+                                        $(go.TextBlock,
+                                            {
+                                                background: '#FFFFFF',
+                                                width: 230,
+                                                font: 'normal 18px san-serif',
+                                                wrap: go.TextBlock.WrapFit
+                                            },
+                                            new go.Binding('text'))),
+                                ))
+                        })
+                ))
+        );
 
     // but use the default Link template, by not setting Diagram.linkTemplate
 
