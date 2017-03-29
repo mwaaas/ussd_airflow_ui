@@ -18,12 +18,21 @@ export class VisualizerComponent implements AfterViewInit {
 
     const $ = go.GraphObject.make;  // for conciseness in defining templates
 
-    const ussdJourney: go.Diagram = $(go.Diagram, this.element.nativeElement,
-      {
-        initialContentAlignment: go.Spot.Center,  // center the content
-        'undoManager.isEnabled': true  // enable undo & redo
-      });
-
+    const ussdJourney = $(go.Diagram, this.element.nativeElement,
+        {
+            minScale: 0.1,
+            grid: $(go.Panel, 'Grid',
+                $(go.Shape, 'LineH', {stroke: 'gray', strokeWidth: 0.5}),
+                $(go.Shape, 'LineH', {stroke: 'darkslategray', strokeWidth: 1.5, interval: 10}),
+                $(go.Shape, 'LineV', {stroke: 'gray', strokeWidth: 0.5}),
+                $(go.Shape, 'LineV', {stroke: 'darkslategray', strokeWidth: 1.5, interval: 10})
+            ),
+            initialContentAlignment: go.Spot.Left,
+            'toolManager.mouseWheelBehavior': go.ToolManager.WheelZoom,
+            'textEditingTool.starting': go.TextEditingTool.SingleClick,
+            'draggingTool.isGridSnapEnabled': true,
+            'undoManager.isEnabled': true
+        });
     // define a simple Node template
     ussdJourney.nodeTemplate =
       $(go.Node, 'Auto',  // the Shape will go around the TextBlock
@@ -41,17 +50,11 @@ export class VisualizerComponent implements AfterViewInit {
     // create the model data that will be represented by Nodes and Links
     ussdJourney.model = new go.GraphLinksModel(
       [
-        { key: 'Alpha', color: 'lightblue' },
-        { key: 'Beta', color: 'orange' },
-        { key: 'Gamma', color: 'lightgreen' },
-        { key: 'Delta', color: 'pink' }
-      ],
+        {key: '1', title: 'initial_screen', items: [{index: 1, portName: 'out1', text: 'Enter name'}]},
+        {key: '2', title: 'welcome_screen', items: [{index: 1, portName: 'out1', text: 'Enter date of birth'}]}
+    ],
       [
-        { from: 'Alpha', to: 'Beta' },
-        { from: 'Alpha', to: 'Gamma' },
-        { from: 'Beta', to: 'Beta' },
-        { from: 'Gamma', to: 'Delta' },
-        { from: 'Delta', to: 'Alpha' }
+        {from : '1', to: '2', fromPort: 'out1'}
       ]);
   }
 
