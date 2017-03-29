@@ -1,0 +1,9 @@
+version: '3'
+services:
+  app:
+    build: .
+    command: ng server --host 0.0.0.0
+    volumes:
+      - ./src:/var/www/src
+    ports:
+      - 4200:4200
