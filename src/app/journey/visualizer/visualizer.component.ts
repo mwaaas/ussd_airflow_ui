@@ -101,15 +101,19 @@ export class VisualizerComponent implements AfterViewInit {
 
     // but use the default Link template, by not setting Diagram.linkTemplate
 
-    // create the model data that will be represented by Nodes and Links
-    ussdJourney.model = new go.GraphLinksModel(
-      [
-        {key: '1', title: 'initial_screen', items: [{index: 1, portName: 'out1', text: 'Enter name'}]},
-        {key: '2', title: 'welcome_screen', items: [{index: 1, portName: 'out1', text: 'Enter date of birth'}]}
-    ],
-      [
-        {from : '1', to: '2', fromPort: 'out1'}
-      ]);
+    const model = $(go.GraphLinksModel);
+
+    model.linkFromPortIdProperty = 'previous_screen';
+    model.linkToPortIdProperty = 'next_screen';
+    model.nodeDataArray =
+    [
+    {key: '1', title: 'initial_screen', items: [{index: 1, portName: 'out1', text: 'Enter name'}]},
+    {key: '2', title: 'welcome_screen', items: [{index: 1, portName: 'out1', text: 'Enter date of birth'}]}
+    ];
+    model.linkDataArray = [
+    {from : '1', to: '2', previous_screen: 'out1'}
+    ];
+    ussdJourney.model  = model;
   }
 
 }
