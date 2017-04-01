@@ -1,4 +1,5 @@
 import { Component, ElementRef, AfterViewInit, ViewChild, OnInit} from '@angular/core';
+import {Http, Headers} from '@angular/http';
 import * as go from 'gojs';
 
 @Component({
@@ -11,7 +12,7 @@ export class VisualizerComponent implements AfterViewInit {
 
   @ViewChild('ussdJourney')
   element: ElementRef;
-  constructor() { }
+  constructor(public http: Http) { }
 
   ngAfterViewInit() {
     // (go as any).licenseKey = "...";
@@ -93,7 +94,7 @@ export class VisualizerComponent implements AfterViewInit {
                                                 font: 'normal 18px san-serif',
                                                 wrap: go.TextBlock.WrapFit
                                             },
-                                            new go.Binding('text'))),
+                                            new go.Binding('text')))
                                 ))
                         })
                 ))
@@ -105,15 +106,39 @@ export class VisualizerComponent implements AfterViewInit {
 
     model.linkFromPortIdProperty = 'previous_screen';
     model.linkToPortIdProperty = 'next_screen';
-    model.nodeDataArray =
-    [
-    {key: '1', title: 'initial_screen', items: [{index: 1, portName: 'out1', text: 'Enter name'}]},
-    {key: '2', title: 'welcome_screen', items: [{index: 1, portName: 'out1', text: 'Enter date of birth'}]}
-    ];
-    model.linkDataArray = [
-    {from : '1', to: '2', previous_screen: 'out1'}
-    ];
+
+    // get customer journey
+    const journey = this.get_customer_journey().subscribe(
+      response => {
+        console.log(response.json());
+        model.nodeDataArray = response.json()['data'];
+        model.linkDataArray = response.json()['links'];
+        },
+      error => {
+        console.log('error');
+        console.log(error.json());
+      }
+    );
+
+    // model.nodeDataArray =
+    // [
+    // {key: '1', title: 'initial_screen', items: [{index: 1, portName: 'out1', text: 'Enter name'}]},
+    // {key: '2', title: 'welcome_screen', items: [{index: 1, portName: 'out1', text: 'Enter date of birth'}]}
+    // ];
+    // model.linkDataArray = [
+    // {from : '1', to: '2'}
+    // ];
     ussdJourney.model  = model;
+  }
+
+  get_customer_journey() {
+    // const url = 'http://ussd.com/journey_visual_data';
+    const url = 'http://app.inclusivity.48a584e2.svc.dockerapp.io:8006/journey_visual_data';
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-Type', 'application/json');
+    // headers.append('Origin', '*');
+    return this.http.get(url, {headers: headers});
   }
 
 }
