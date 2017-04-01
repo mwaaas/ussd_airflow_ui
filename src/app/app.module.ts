@@ -11,6 +11,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
 import { AsideToggleDirective } from './shared/aside.directive';
 import { BreadcrumbsComponent } from './shared/breadcrumb.component';
+import {HttpModule} from '@angular/http';
 
 // Routing Module
 import { AppRoutingModule } from './app.routing';
@@ -28,7 +29,8 @@ import {JourneyModule} from "./journey/journey.module";
     DropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
-    JourneyModule
+    JourneyModule,
+    HttpModule
   ],
   declarations: [
     AppComponent,
