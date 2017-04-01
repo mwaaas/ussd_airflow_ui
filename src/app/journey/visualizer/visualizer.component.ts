@@ -22,16 +22,10 @@ export class VisualizerComponent implements AfterViewInit {
     const ussdJourney = $(go.Diagram, this.element.nativeElement,
         {
             minScale: 0.1,
-            grid: $(go.Panel, 'Grid',
-                $(go.Shape, 'LineH', {stroke: 'gray', strokeWidth: 0.5}),
-                $(go.Shape, 'LineH', {stroke: 'darkslategray', strokeWidth: 1.5, interval: 10}),
-                $(go.Shape, 'LineV', {stroke: 'gray', strokeWidth: 0.5}),
-                $(go.Shape, 'LineV', {stroke: 'darkslategray', strokeWidth: 1.5, interval: 10})
-            ),
             initialContentAlignment: go.Spot.TopLeft,
         });
     ussdJourney.layout = $(go.LayeredDigraphLayout,
-      {columnSpacing: 10, layerSpacing: 10, packOption: 4,
+      {columnSpacing: 15, layerSpacing: 10, packOption: 4,
         layeringOption: go.LayeredDigraphLayout.LayerLongestPathSource,
         initializeOption: go.LayeredDigraphLayout.InitDepthFirstOut,
         aggressiveOption: go.LayeredDigraphLayout.AggressiveMore,
