@@ -28,19 +28,21 @@ export class VisualizerComponent implements AfterViewInit {
                 $(go.Shape, 'LineV', {stroke: 'gray', strokeWidth: 0.5}),
                 $(go.Shape, 'LineV', {stroke: 'darkslategray', strokeWidth: 1.5, interval: 10})
             ),
-            initialContentAlignment: go.Spot.Left,
-            'toolManager.mouseWheelBehavior': go.ToolManager.WheelZoom,
-            'textEditingTool.starting': go.TextEditingTool.SingleClick,
-            'draggingTool.isGridSnapEnabled': true,
-            'undoManager.isEnabled': true
+            initialContentAlignment: go.Spot.TopLeft,
         });
-    ussdJourney.layout = $(go.LayeredDigraphLayout, {columnSpacing: 10});
-    ussdJourney.linkTemplate = $(go.Link, {
-        routing: go.Link.Orthogonal, corner: 0,
-        curve: go.Link.JumpOver
-      },
-      $(go.Shape, {strokeWidth: 3, stroke: '#555'}),
-      $(go.Shape, {toArrow: 'Standard', stroke: null}));
+    ussdJourney.layout = $(go.LayeredDigraphLayout,
+      {columnSpacing: 10, layerSpacing: 10, packOption: 4,
+        layeringOption: go.LayeredDigraphLayout.LayerLongestPathSource,
+        initializeOption: go.LayeredDigraphLayout.InitDepthFirstOut,
+        aggressiveOption: go.LayeredDigraphLayout.AggressiveMore,
+        cycleRemoveOption: go.LayeredDigraphLayout.CycleDepthFirst,
+      });
+    // ussdJourney.linkTemplate = $(go.Link, {
+    //     routing: go.Link.Orthogonal, corner: 0,
+    //     curve: go.Link.JumpOver
+    //   },
+    //   $(go.Shape, {strokeWidth: 3, stroke: '#555'}),
+    //   $(go.Shape, {toArrow: 'Standard', stroke: null}));
     ussdJourney.nodeTemplate =
         $(go.Node, 'Vertical',
             {
