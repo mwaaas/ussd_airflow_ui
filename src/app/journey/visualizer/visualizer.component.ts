@@ -1,4 +1,4 @@
-import { Component, ElementRef, AfterViewInit, ViewChild, OnInit} from '@angular/core';
+import {Component, ElementRef, AfterViewInit, ViewChild, OnInit} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import * as go from 'gojs';
 
@@ -12,7 +12,9 @@ export class VisualizerComponent implements AfterViewInit {
 
   @ViewChild('ussdJourney')
   element: ElementRef;
-  constructor(public http: Http) { }
+
+  constructor(public http: Http) {
+  }
 
   ngAfterViewInit() {
     // (go as any).licenseKey = "...";
@@ -20,12 +22,13 @@ export class VisualizerComponent implements AfterViewInit {
     const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     const ussdJourney = $(go.Diagram, this.element.nativeElement,
-        {
-            minScale: 0.1,
-            initialContentAlignment: go.Spot.TopLeft,
-        });
+      {
+        minScale: 0.1,
+        initialContentAlignment: go.Spot.TopLeft,
+      });
     ussdJourney.layout = $(go.LayeredDigraphLayout,
-      {columnSpacing: 15, layerSpacing: 10, packOption: 4,
+      {
+        columnSpacing: 15, layerSpacing: 10, packOption: 4,
         layeringOption: go.LayeredDigraphLayout.LayerLongestPathSource,
         initializeOption: go.LayeredDigraphLayout.InitDepthFirstOut,
         aggressiveOption: go.LayeredDigraphLayout.AggressiveMore,
@@ -38,74 +41,76 @@ export class VisualizerComponent implements AfterViewInit {
     //   $(go.Shape, {strokeWidth: 3, stroke: '#555'}),
     //   $(go.Shape, {toArrow: 'Standard', stroke: null}));
     ussdJourney.nodeTemplate =
-        $(go.Node, 'Vertical',
-            {
-                background: 'black', toSpot: go.Spot.Left, portId: 'IN',
-                name: 'Screen'
-            },
-            $(go.Panel, 'Auto',
-                {},
-                $(go.Shape, 'RoundedRectangle',
-                    {fill: '#EFEFEF'}),
-                $(go.Panel, 'Vertical',
-                    $(go.TextBlock, 'Screen',
-                        {},
-                        new go.Binding('text', 'key', function (arg) {
-                            return 'Screen ' + arg;
-                        })),
-                    $(go.Panel, 'Auto', {alignment: go.Spot.Center},
+      $(go.Node, 'Vertical',
+        {
+          background: 'black', toSpot: go.Spot.Left, portId: 'IN',
+          name: 'Screen'
+        },
+        $(go.Panel, 'Auto',
+          {},
+          $(go.Shape, 'RoundedRectangle',
+            {fill: '#EFEFEF'}),
+          $(go.Panel, 'Vertical',
+            $(go.TextBlock, 'Screen',
+              {},
+              new go.Binding('text', 'key', function (arg) {
+                return 'Screen ' + arg;
+              })),
+            $(go.Panel, 'Auto', {alignment: go.Spot.Center},
+              $(go.Shape, 'RoundedRectangle',
+                {fill: 'white', width: 242}),
+              $(go.TextBlock, '',
+                {width: 230, font: 'normal 18px san-serif', wrap: go.TextBlock.WrapFit},
+                new go.Binding('text', 'title')
+              )
+            ),
+            $(go.Panel, 'Vertical',
+              new go.Binding('itemArray', 'items'),
+              {
+                itemTemplate: $(go.Panel, 'Horizontal',
+                  {margin: 1},
+                  $(go.Panel, 'Spot',
+                    $(go.Shape, 'Rectangle',
+                      {height: 50, width: 300, fill: '#EFEFEF', stroke: null}),
+                    $(go.TextBlock,
+                      {
+                        margin: 2,
+                        alignment: new go.Spot(0.04, 0.5),
+                        alignmentFocus: new go.Spot(0, 0.5),
+                        width: 10,
+                        name: 'ObjectIndex'
+                      },
+                      new go.Binding('text', 'index')),
+                    $(go.Panel, "Spot", {},
+                      $(go.Panel, 'Auto',
+                        {alignment: go.Spot.Center},
                         $(go.Shape, 'RoundedRectangle',
-                            {fill: 'white', width: 242}),
-                        $(go.TextBlock, '',
-                            {width: 230, font: 'normal 18px san-serif', wrap: go.TextBlock.WrapFit},
-                            new go.Binding('text', 'title')
-                        )
-                    ),
-                    $(go.Panel, 'Vertical',
-                        new go.Binding('itemArray', 'items'),
+                          {fill: '#FFFFFF', width: 242},
+                        ),
+                        $(go.TextBlock,
+                          {
+                            background: '#FFFFFF',
+                            width: 230,
+                            font: 'normal 18px san-serif',
+                            wrap: go.TextBlock.WrapFit
+                          },
+                          new go.Binding('text'))
+                      ),
+                      $("Button",
                         {
-                            itemTemplate: $(go.Panel, 'Horizontal',
-                                {margin: 1},
-                                $(go.Panel, 'Spot',
-                                    $(go.Shape, 'Rectangle',
-                                        {height: 50, width: 300, fill: '#EFEFEF', stroke: null}),
-                                    $(go.TextBlock,
-                                        {
-                                            margin: 2,
-                                            alignment: new go.Spot(0.04, 0.5),
-                                            alignmentFocus: new go.Spot(0, 0.5),
-                                            width: 10,
-                                            name: 'ObjectIndex'
-                                        },
-                                        new go.Binding('text', 'index')),
-                                    $(go.Panel, 'Auto',
-                                        {alignment: go.Spot.Center},
-                                        $(go.Shape, 'RoundedRectangle',
-                                            {fill: '#FFFFFF', width: 242},
-                                        ),
-                                        $(go.TextBlock,
-                                            {
-                                                background: '#FFFFFF',
-                                                width: 230,
-                                                font: 'normal 18px san-serif',
-                                                wrap: go.TextBlock.WrapFit
-                                            },
-                                            new go.Binding('text'))),
-									$("Button",
-                                        {
-                                            name: "THREEBUTTON",
-                                            width: 20, height: 20,
-                                            alignment: new go.Spot(1, 0.5),
-                                            visible: true,
-                                            fromSpot: go.Spot.Right
-                                            //doubleClick: portClicked
-                                        },
-                                        new go.Binding("portId", "portName")
-                                    )
-                                ))
-                        })
-                ))
-        );
+                          name: "THREEBUTTON",
+                          width: 10, height: 10,
+                          alignment: new go.Spot(1, 0.5),
+                          visible: true
+                          //doubleClick: portClicked
+                        },
+                        new go.Binding("portId", "portName")
+                      )
+                    )
+                  ))
+              })
+          ))
+      );
 
     // but use the default Link template, by not setting Diagram.linkTemplate
 
@@ -120,7 +125,7 @@ export class VisualizerComponent implements AfterViewInit {
         console.log(response.json());
         model.nodeDataArray = response.json()['data'];
         model.linkDataArray = response.json()['links'];
-        },
+      },
       error => {
         console.log('error');
         console.log(error.json());
@@ -135,7 +140,7 @@ export class VisualizerComponent implements AfterViewInit {
     // model.linkDataArray = [
     // {from : '1', to: '2'}
     // ];
-    ussdJourney.model  = model;
+    ussdJourney.model = model;
   }
 
   get_customer_journey() {
