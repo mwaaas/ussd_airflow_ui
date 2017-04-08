@@ -91,14 +91,14 @@ export class VisualizerComponent implements AfterViewInit {
                                                 wrap: go.TextBlock.WrapFit
                                             },
                                             new go.Binding('text'))),
-									$go("Button",
+									$("Button",
                                         {
                                             name: "THREEBUTTON",
                                             width: 20, height: 20,
                                             alignment: new go.Spot(1, 0.5),
                                             visible: true,
-                                            fromSpot: go.Spot.Right,
-                                            doubleClick: portClicked
+                                            fromSpot: go.Spot.Right
+                                            //doubleClick: portClicked
                                         },
                                         new go.Binding("portId", "portName")
                                     )
