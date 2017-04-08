@@ -90,7 +90,18 @@ export class VisualizerComponent implements AfterViewInit {
                                                 font: 'normal 18px san-serif',
                                                 wrap: go.TextBlock.WrapFit
                                             },
-                                            new go.Binding('text')))
+                                            new go.Binding('text'))),
+									$go("Button",
+                                        {
+                                            name: "THREEBUTTON",
+                                            width: 20, height: 20,
+                                            alignment: new go.Spot(1, 0.5),
+                                            visible: true,
+                                            fromSpot: go.Spot.Right,
+                                            doubleClick: portClicked
+                                        },
+                                        new go.Binding("portId", "portName")
+                                    )
                                 ))
                         })
                 ))
@@ -100,8 +111,8 @@ export class VisualizerComponent implements AfterViewInit {
 
     const model = $(go.GraphLinksModel);
 
-    model.linkFromPortIdProperty = 'previous_screen';
-    model.linkToPortIdProperty = 'next_screen';
+    model.linkFromPortIdProperty = 'fromPort';
+    model.linkToPortIdProperty = 'toPort';
 
     // get customer journey
     const journey = this.get_customer_journey().subscribe(
